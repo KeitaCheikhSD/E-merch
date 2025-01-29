@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Confirmation de commande - E-Merch{% endblock %}
+
+{% block body %}
+<div class="min-h-screen relative bg-[#0A0F1C] overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.1) 0%, transparent 50%);"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-white mb-2">Merci pour votre commande ! 🎮</h1>
+                <p class="text-gray-400">Commande #{{ commande.id }} confirmée</p>
+            </div>
+
+            <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% endfor %}
+
+            <!-- Informations client -->
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Informations client</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+                    <div>
+                        <p class="text-gray-400 mb-1">Nom</p>
+                        <p>{{ app.user.nom }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 mb-1">Prénom</p>
+                        <p>{{ app.user.prenom }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 mb-1">Email</p>
+                        <p>{{ app.user.email }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 mb-1">Téléphone</p>
+                        <p>{{ app.user.telephone }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Adresse de livraison -->
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Adresse de livraison</h2>
+                <div class="text-gray-300">
+                    <p>{{ adresse.rue }}</p>
+                    <p>{{ adresse.codePostal }} {{ adresse.ville }}</p>
+                    <p>{{ adresse.pays }}</p>
+                </div>
+            </div>
+
+            <!-- Adresse de facturation -->
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Adresse de facturation</h2>
+                <div class="text-gray-300">
+                    <p>{{ adresseFacturation.rue }}</p>
+                    <p>{{ adresseFacturation.codePostal }} {{ adresseFacturation.ville }}</p>
+                    <p>{{ adresseFacturation.pays }}</p>
+                </div>
+            </div>
+
+            <!-- Récapitulatif de la commande -->
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Détails de la commande #{{ commande.id }}</h2>
+                <div class="space-y-4">
+                {% if paysActuel == 'FR' %}
+                    
+                {% endif %}
+                    {% for ligne in commande.lignesCommande %}
+                        <div class="flex items-center justify-between py-2">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-lg bg-white/[0.03] overflow-hidden">
+                                    <img src="{{ asset('images/produits/' ~ ligne.produit.Libellé ~ '.webp') }}" 
+                                         alt="{{ ligne.produit.Libellé }}" 
+                                         class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <p class="text-white">{{ ligne.produit.Libellé }}</p>
+                                    <p class="text-sm text-gray-400">Quantité: {{ ligne.quantite }}</p>
+                                </div>
+                            </div>
+                            <span class="text-blue-400">
+                                {{ (ligne.prix * ligne.quantite)|number_format(2, ',', ' ') }} €
+                            </span>
+                        </div>
+                    {% endfor %}
+
+                    <div class="border-t border-white/[0.05] pt-4 space-y-2">
+                        <div class="flex justify-between text-gray-400">
+                            <span>Sous-total</span>
+                            <span>{{ total|number_format(2, ',', ' ') }} €</span>
+                        </div>
+                        <div class="flex justify-between text-gray-400">
+                            <span>Livraison</span>
+                            <span>Gratuit</span>
+                        </div>
+                        <div class="flex justify-between text-lg font-semibold">
+                            <span class="text-white">Total</span>
+                            <span class="text-blue-400">{{ total|number_format(2, ',', ' ') }} €</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="flex justify-center gap-4">
+                <a href="{{ path('app_produits') }}" 
+                   class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+                    Retour à la boutique
+                </a>
+                <a href="{{ path('app_profil') }}" 
+                   class="px-6 py-3 bg-white/[0.05] hover:bg-white/[0.1] text-white font-semibold rounded-lg transition-colors">
+                    Voir mes commandes
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

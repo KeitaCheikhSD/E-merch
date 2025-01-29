@@ -1,0 +1,294 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Commande - E-Merch{% endblock %}
+
+{% block body %}
+<div class="min-h-screen relative bg-[#0A0F1C] overflow-hidden">
+    <div class="absolute inset-0">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"></div>
+        <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.1) 0%, transparent 50%);"></div>
+    </div>
+
+    <div class="container mx-auto px-4 py-8 relative z-10">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-white mb-8">Finaliser la commande</h1>
+
+            <form method="POST" action="{{ path('app_commander_confirmer') }}" class="space-y-8">
+                <!-- Informations personnelles -->
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-6">
+                <h2 class="text-xl font-semibold text-white mb-4">Informations client</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-300">
+                    <div>
+                        <p class="text-gray-400 mb-1">Nom</p>
+                        <p>{{ app.user.nom }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 mb-1">Prénom</p>
+                        <p>{{ app.user.prenom }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 mb-1">Email</p>
+                        <p>{{ app.user.email }}</p>
+                    </div>
+                    <div>
+                        <p class="text-gray-400 mb-1">Téléphone</p>
+                        <p>{{ app.user.telephone }}</p>
+                    </div>
+                </div>
+            </div>
+
+                <!-- Adresse de livraison -->
+                <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6">
+                    <h2 class="text-xl font-semibold text-white mb-4">Adresse de livraison</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="adresse" class="block text-sm font-medium text-gray-400 mb-1">Adresse</label>
+                            <input type="text" id="adresse" name="adresse" required 
+                                   class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="code_postal" class="block text-sm font-medium text-gray-400 mb-1">Code postal</label>
+                                <input type="text" id="code_postal" name="code_postal" required 
+                                       class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                            </div>
+                            <div>
+                                <label for="ville" class="block text-sm font-medium text-gray-400 mb-1">Ville</label>
+                                <input type="text" id="ville" name="ville" required 
+                                       class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="paysAdresse" class="block text-sm font-medium text-gray-400 mb-1">Pays</label>
+                            <input type="text" id="paysAdresse" name="paysAdresse" required 
+                                   class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                        </div>
+                    </div>
+                </div>
+                 <!-- Adresse de facturation -->
+                <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6">
+                    <h2 class="text-xl font-semibold text-white mb-4">Adresse de facturation</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <div>
+                            <label for="adresseFacturation" class="block text-sm font-medium text-gray-400 mb-1">Adresse</label>
+                            <input type="text" id="adresseFacturation" name="adresseFacturation" required 
+                                   class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label for="code_postalFacturation" class="block text-sm font-medium text-gray-400 mb-1">Code postal</label>
+                                <input type="text" id="code_postalFacturation" name="code_postalFacturation" required 
+                                       class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                            </div>
+                            <div>
+                                <label for="villeFacturation" class="block text-sm font-medium text-gray-400 mb-1">Ville</label>
+                                <input type="text" id="villeFacturation" name="villeFacturation" required 
+                                       class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="paysFacturation" class="block text-sm font-medium text-gray-400 mb-1">Pays</label>
+                            <input type="text" id="paysFacturation" name="paysFacturation" required 
+                                   class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Méthode de paiement -->
+                <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6">
+                    <h2 class="text-xl font-semibold text-white mb-4">Méthode de paiement</h2>
+                    <div class="space-y-4">
+                        <!-- PayPal -->
+                        <div class="relative">
+                            <input type="radio" id="paypal" name="methode_paiement" value="paypal" class="hidden peer" required>
+                            <label for="paypal" class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.1] cursor-pointer peer-checked:border-blue-500 hover:bg-white/[0.05] transition-all">
+                                <div class="flex items-center">
+                                    <img src="{{ asset('images/paypal.png') }}" alt="PayPal" class="h-8 mr-3">
+                                    <div>
+                                        <p class="text-white font-medium">PayPal</p>
+                                        <p class="text-sm text-gray-400">Paiement sécurisé via PayPal</p>
+                                    </div>
+                                </div>
+                                <div class="text-blue-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+                                    </svg>
+                                </div>
+                            </label>
+                        </div>
+                        <!-- Formulaire PayPal -->
+                        <div id="paypal-form" class="hidden mt-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.1]">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label for="email_paypal" class="block text-sm font-medium text-gray-400 mb-1">Email</label>
+                                    <input type="email" id="email_paypal" name="email_paypal" placeholder="john.doe@example.com" 
+                                           class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Carte bancaire -->
+                        <div class="relative">
+                            <input type="radio" id="carte" name="methode_paiement" value="carte" class="hidden peer" required>
+                            <label for="carte" class="flex items-center justify-between p-4 rounded-xl bg-white/[0.03] border border-white/[0.1] cursor-pointer peer-checked:border-blue-500 hover:bg-white/[0.05] transition-all">
+                                <div class="flex items-center">
+                                    <div class="flex space-x-2 mr-3">
+                                        <img src="{{ asset('images/visa.png') }}" alt="Visa" class="h-8">
+                                    </div>
+                                    <div>
+                                        <p class="text-white font-medium">Carte bancaire</p>
+                                        <p class="text-sm text-gray-400">Paiement sécurisé par carte</p>
+                                    </div>
+                                </div>
+                                <div class="text-blue-500">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+                                    </svg>
+                                </div>
+                            </label>
+
+                            <!-- Formulaire carte bancaire -->
+                            <div id="carte-form" class="hidden mt-4 p-4 rounded-xl bg-white/[0.02] border border-white/[0.1]">
+                                <div class="grid grid-cols-1 gap-4">
+                                    <div>
+                                        <label for="numero_carte" class="block text-sm font-medium text-gray-400 mb-1">Numéro de carte</label>
+                                        <input type="text" id="numero_carte" name="numero_carte"  placeholder="1234 5678 9012 3456" 
+                                               class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label for="date_expiration" class="block text-sm font-medium text-gray-400 mb-1">Date d'expiration</label>
+                                            <input type="text" id="date_expiration" name="date_expiration" pattern="\d{2}/\d{2}" placeholder="MM/AA" 
+                                                   class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                                        </div>
+                                        <div>
+                                            <label for="cvv" class="block text-sm font-medium text-gray-400 mb-1">CVV</label>
+                                            <input type="text" id="cvv" name="cvv" pattern="\d{3}" placeholder="123" 
+                                                   class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label for="nom_carte" class="block text-sm font-medium text-gray-400 mb-1">Nom sur la carte</label>
+                                        <input type="text" id="nom_carte" name="nom_carte" placeholder="JEAN DUPONT" 
+                                               class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Récapitulatif de la commande -->
+                <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6">
+                    <h2 class="text-xl font-semibold text-white mb-4">Récapitulatif de la commande</h2>
+                    <div class="space-y-4">
+                        {% for ligneDecoree in lignesPanierDecorées %}
+                            {% set ligne = ligneDecoree.ligne %}
+                            <div class="flex justify-between items-center text-gray-400">
+                                <div>
+                                    {% set parts = ligne.produit.Libellé|split('_') %}
+                                    <span class="text-white">{{ parts[1]|capitalize }} {{ parts[0]|capitalize }}</span>
+                                    <span class="text-sm">x {{ ligne.quantite }}</span>
+                                </div>
+                                <span>{{ ligneDecoree.prixUnitaire|number_format(2, ',', ' ') }} €</span>
+                            </div>
+                        {% endfor %}
+
+                        <div class="border-t border-white/[0.1] pt-4 mt-4">
+                            <div class="flex justify-between text-gray-400">
+                                <span>Sous-total</span>
+                                <span>{{ total|number_format(2, ',', ' ') }} €</span>
+                            </div>
+                            <div class="flex justify-between text-gray-400">
+                                <span>Livraison</span>
+                                <span>Gratuite</span>
+                            </div>
+                            <div class="flex justify-between text-white font-semibold mt-2">
+                                <span>Total</span>
+                                <span>{{ total|number_format(2, ',', ' ') }} €</span>
+                            </div>
+                            {% if paysActuel == 'INT' %}
+                                <div class="mt-2 text-sm text-blue-400">
+                                    Prix ajusté pour livraison internationale
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Instructions de livraison -->
+                <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6">
+                    <h2 class="text-xl font-semibold text-white mb-4">Instructions de livraison</h2>
+                    <div>
+                        <label for="commentaire" class="block text-sm font-medium text-gray-400 mb-1">Instructions spéciales (optionnel)</label>
+                        <textarea id="commentaire" name="commentaire" rows="3" 
+                                  class="w-full px-4 py-2 rounded-xl bg-white/[0.03] border border-white/[0.1] text-white focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
+                                  placeholder="Instructions particulières pour la livraison..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Bouton de confirmation -->
+                <button type="submit" 
+                        class="w-full py-4 px-6 rounded-xl text-white font-semibold bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 transform transition-all duration-200 ease-in-out hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#0A0F1C] flex items-center justify-center space-x-2">
+                    <span>Confirmer la commande</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const carteRadio = document.getElementById('carte');
+        const paypalRadio = document.getElementById('paypal');
+        const carteForm = document.getElementById('carte-form');
+        const paypalForm = document.getElementById('paypal-form');
+
+        function togglePaymentForms() {
+            if (carteRadio.checked) {
+                paypalForm.classList.add('hidden');
+                carteForm.classList.remove('hidden');
+            } else if (paypalRadio.checked) {
+                carteForm.classList.add('hidden');
+                paypalForm.classList.remove('hidden');
+            }
+        }
+
+        carteRadio.addEventListener('change', togglePaymentForms);
+        paypalRadio.addEventListener('change', togglePaymentForms);
+
+        // Formatage du numéro de carte
+        const numeroCarteInput = document.getElementById('numero_carte');
+        numeroCarteInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 16) value = value.slice(0, 16);
+            const groups = value.match(/.{1,4}/g) || [];
+            e.target.value = groups.join(' ');
+        });
+
+        // Formatage de la date d'expiration
+        const dateExpirationInput = document.getElementById('date_expiration');
+        dateExpirationInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 4) value = value.slice(0, 4);
+            if (value.length > 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2);
+            }
+            e.target.value = value;
+        });
+
+        // Formatage du CVV
+        const cvvInput = document.getElementById('cvv');
+        cvvInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) value = value.slice(0, 3);
+            e.target.value = value;
+        });
+    });
+</script>
+{% endblock %}

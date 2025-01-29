@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement - E-Merch{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#0A0F1C]">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold text-white mb-8">Paiement</h1>
+
+            {# Messages flash #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if label == 'success' %}bg-green-500/20 text-green-200{% else %}bg-red-500/20 text-red-200{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {# Résumé de la commande #}
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-8">
+                <h2 class="text-xl font-semibold text-white mb-4">Résumé de votre commande</h2>
+                
+                {# Articles #}
+                <div class="space-y-4 mb-6">
+                    {% for item in items %}
+                        <div class="flex justify-between items-center text-gray-300">
+                            <div>
+                                {% set parts = item.product.libellé|split('_') %}
+                                <span class="font-medium">{{ parts[1]|capitalize }} {{ parts[0]|capitalize}}</span>
+                                <span class="text-sm text-gray-400 ml-2">x{{ item.quantity }}</span>
+                            </div>
+                            <span>{{ (item.product.prix * item.quantity)|number_format(2, ',', ' ') }} €</span>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                {# Total #}
+                <div class="border-t border-white/[0.1] pt-4">
+                    <div class="flex justify-between text-lg font-semibold">
+                        <span class="text-white">Total</span>
+                        <span class="text-blue-400">{{ total|number_format(2, ',', ' ') }} €</span>
+                    </div>
+                </div>
+            </div>
+
+            {# Adresse de livraison #}
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-6 mb-8">
+                <h2 class="text-xl font-semibold text-white mb-4">Adresse de livraison</h2>
+                <div class="text-gray-300">
+                    <p>{{ adresse.rue }}</p>
+                    <p>{{ adresse.code_postal }} {{ adresse.ville }}</p>
+                    <p>{{ adresse.pays }}</p>
+                </div>
+            </div>
+
+            {# Formulaire de paiement #}
+            <form action="{{ path('app_payment_confirm') }}" method="POST" class="space-y-6">
+                {# Ici, vous pouvez ajouter les champs pour le paiement si nécessaire #}
+                
+                <div class="mt-8 flex flex-col gap-4">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        Confirmer et payer {{ total|number_format(2, ',', ' ') }} €
+                    </button>
+                    
+                    <a href="{{ path('app_checkout') }}" class="text-center text-gray-400 hover:text-white transition-colors">
+                        Modifier l'adresse de livraison
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

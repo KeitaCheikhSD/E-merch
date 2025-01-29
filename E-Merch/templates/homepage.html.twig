@@ -1,0 +1,196 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="relative bg-primary text-white py-32 overflow-hidden text-center">
+    <div class="absolute inset-0 bg-gradient-to-r from-primary to-primary-light opacity-90"></div>
+    <div class="mx-auto px-4 relative">
+      <div class="max-w-2xl text-center mx-auto my-0">
+        <h1 class="text-6xl font-bold mb-6">Augmentez votre style avec<br /> E-Merch</h1>
+        <p class="text-xl mb-8 opacity-90">Produits exclusifs pour les Joueurs </p>
+        <a 
+          href="/produits" 
+          class="inline-block bg-white text-primary px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
+        >
+          Découvrir la collection
+        </a>
+      </div>
+    </div>
+  </section>
+  <div class="px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto bg-white">
+  <div class="grid items-center lg:grid-cols-12 gap-6 lg:gap-12">
+    <div class="lg:col-span-4">
+      <div class="lg:pe-6 xl:pe-12">
+        <p class="text-6xl font-bold leading-10 text-primary">
+          95%
+          <span class="ms-1 inline-flex items-center gap-x-1 bg-primary/10 font-medium text-primary text-xs leading-4 rounded-full py-0.5 px-2">
+            <svg class="shrink-0 size-4" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M10.067.87a2.89 2.89 0 0 0-4.134 0l-.622.638-.89-.011a2.89 2.89 0 0 0-2.924 2.924l.01.89-.636.622a2.89 2.89 0 0 0 0 4.134l.637.622-.011.89a2.89 2.89 0 0 0 2.924 2.924l.89-.01.622.636a2.89 2.89 0 0 0 4.134 0l.622-.637.89.011a2.89 2.89 0 0 0 2.924-2.924l-.01-.89.636-.622a2.89 2.89 0 0 0 0-4.134l-.637-.622.011-.89a2.89 2.89 0 0 0-2.924-2.924l-.89.01-.622-.636zm.287 5.984-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7 8.793l2.646-2.647a.5.5 0 0 1 .708.708z"/>
+            </svg>
+            +12% ce mois
+          </span>
+        </p>
+        <p class="mt-2 sm:mt-3 text-gray-500">de nos clients sont des gamers satisfaits 🎮</p>
+      </div>
+    </div>
+
+    <div class="lg:col-span-8 relative lg:before:absolute lg:before:top-0 lg:before:-start-12 lg:before:w-px lg:before:h-full lg:before:bg-primary/20">
+      <div class="grid gap-6 grid-cols-2 md:grid-cols-4 lg:grid-cols-3 sm:gap-8">
+        <div>
+          <p class="text-3xl font-semibold text-primary">24/7</p>
+          <p class="mt-1 text-gray-500">Support gaming</p>
+        </div>
+        
+        <div>
+          <p class="text-3xl font-semibold text-primary">50K+</p>
+          <p class="mt-1 text-gray-500">Gamers équipés</p>
+        </div>
+       
+        <div>
+          <p class="text-3xl font-semibold text-primary">100%</p>
+          <p class="mt-1 text-gray-500">Style gaming</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<section id="bestsellers" class="py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="text-primary font-semibold">COLLECTION POPULAIRE</span>
+        <h2 class="text-4xl font-bold text-gray-800 mt-2">Nos Meilleures Ventes</h2>
+      </div>
+
+       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {% for product in featuredProducts %}
+                    <div class="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-white/[0.05] overflow-hidden transition-all duration-300 transform hover:-translate-y-1">
+                        <div class="relative">
+                            <img 
+                                src="{{ asset('images/produits/' ~ product.Libellé ~ '.webp') }}"
+                                alt="{{ product.Libellé }}"
+                                class="w-full h-80 object-cover"
+                            >
+                            {% if product.Quantite < 5 %}
+                                <span class="absolute top-4 right-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm">
+                                    Stock limité
+                                </span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="p-6">
+                            <div class="flex items-center mb-2">
+                                <div class="flex items-center">
+                                    {% set rating = product.avis|length > 0 ? product.avis|reduce((sum, avis) => sum + avis.note, 0) / product.avis|length : 0 %}
+                                    {% for i in 1..5 %}
+                                        <svg
+                                            class="w-5 h-5 {% if i <= rating %}text-yellow-400{% else %}text-gray-300{% endif %}"
+                                            fill="currentColor"
+                                            viewBox="0 0 20 20"
+                                        >
+                                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                        </svg>
+                                    {% endfor %}
+                                </div>
+                                <span class="text-sm text-gray-400 ml-2">({{ product.avis|length }})</span>
+                            </div>
+                            {% set parts = product.Libellé|split('_') %}
+                            <h3 class="text-xl font-bold text-gray-800 mb-2">{{ parts[1]|capitalize }} {{ parts[0]|capitalize}}</h3>
+                            <p class="text-blue-400 font-bold text-2xl mb-4">{{ product.Prix }} €</p>
+                            
+                            <div class="flex gap-2">
+                                <a 
+                                    href="{{ path('app_produit', {id: product.id}) }}"
+                                    class="flex-1 text-center bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white py-3 rounded-lg font-semibold transition-all duration-200"
+                                >
+                                    Voir le produit
+                                </a>
+                                <form method="POST" action="{{ path('app_add_to_cart', {id: product.id}) }}" class="contents">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button 
+                                        type="submit"
+                                        class="p-3 border border-blue-500 text-blue-400 rounded-lg hover:bg-blue-500 hover:text-white transition-colors"
+                                        aria-label="Ajouter au panier"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                        </svg>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+      
+      
+    </div>
+  </section>
+
+  
+
+  <section id="faq" class="py-24">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="text-primary font-semibold">FAQ</span>
+        <h2 class="text-4xl font-bold text-gray-800 mt-2">Questions Fréquentes</h2>
+      </div>
+      <div class="max-w-3xl mx-auto space-y-6">
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Comment passer une commande ?</h3>
+          <p class="text-gray-600">Parcourez notre catalogue, ajoutez les articles souhaités à votre panier et suivez le processus de paiement sécurisé.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Quels sont les délais de livraison ?</h3>
+          <p class="text-gray-600">Les délais de livraison varient entre 3 à 5 jours ouvrés pour la France métropolitaine.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Acceptez-vous les retours ?</h3>
+          <p class="text-gray-600">Oui, vous disposez de 15 jours pour retourner un article dans son état d'origine.</p>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-6">
+          <h3 class="text-xl font-semibold text-gray-800 mb-2">Quels moyens de paiement acceptez-vous ?</h3>
+          <p class="text-gray-600">Nous acceptons les cartes bancaires (Visa, Mastercard) et PayPal pour un paiement sécurisé.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team" class="py-24 bg-gray-50">
+    <div class="container mx-auto px-4">
+      <div class="text-center mb-16">
+        <span class="text-primary font-semibold">NOTRE ÉQUIPE</span>
+        <h2 class="text-4xl font-bold text-gray-800 mt-2">L'équipe derrière E-Merch</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="relative w-48 h-48 mx-auto mb-4">
+            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="Team member" class="rounded-full w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Hannibal N</h3>
+          <p class="text-primary">Mr Producer</p>
+        </div>
+        <div class="text-center">
+          <div class="relative w-48 h-48 mx-auto mb-4">
+            <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="Team member" class="rounded-full w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Cheikh K</h3>
+          <p class="text-primary">Responsable Design pattern</p>
+        </div>
+        <div class="text-center">
+          <div class="relative w-48 h-48 mx-auto mb-4">
+            <img src="https://randomuser.me/api/portraits/men/3.jpg" alt="Team member" class="rounded-full w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Kenzo S</h3>
+          <p class="text-primary">Gérant de Bases de données</p>
+        </div>
+        <div class="text-center">
+          <div class="relative w-48 h-48 mx-auto mb-4">
+            <img src="https://randomuser.me/api/portraits/women/0.jpg" alt="Team member" class="rounded-full w-full h-full object-cover">
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800">Fanny B</h3>
+          <p class="text-primary">Analyste</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock %}

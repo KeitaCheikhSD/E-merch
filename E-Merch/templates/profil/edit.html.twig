@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier mon profil{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#0A0F1C] py-12">
+    <div class="container mx-auto px-4">
+        <!-- En-tête -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">Modifier mon profil</h1>
+        </div>
+
+    
+
+        <!-- Formulaire de modification -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <h2 class="text-2xl font-semibold mb-4">Modifier mes informations</h2>
+            {{ form_start(form, {'attr': {'class': 'space-y-4'}}) }}
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="form-group">
+                        {{ form_label(form.email, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                        {{ form_widget(form.email) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.nom, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                        {{ form_widget(form.nom) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.prenom, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                        {{ form_widget(form.prenom) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.plainPassword, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                        {{ form_widget(form.plainPassword) }}
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.currentPassword, null, {'label_attr': {'class': 'block text-sm font-medium text-gray-700 mb-1'}}) }}
+                        {{ form_widget(form.currentPassword) }}
+                    </div>
+                </div>
+                <div class="mt-6 flex justify-between">
+                    <a href="{{ path('app_profil') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">
+                        Retour
+                    </a>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Enregistrer les modifications
+                    </button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+{% endblock %}

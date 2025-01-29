@@ -1,0 +1,85 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#0A0F1C] py-12">
+    <div class="container mx-auto px-4">
+        <!-- En-tête -->
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold text-white mb-4">Mon profil</h1>
+        </div>
+
+        <!-- Messages flash -->
+        {% for message in app.flashes('success') %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ message }}</span>
+            </div>
+        {% endfor %}
+
+        <!-- Informations utilisateur -->
+        <div class="bg-white rounded-lg shadow-lg p-6 mb-8">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-semibold">Informations personnelles</h2>
+                <div class="flex gap-4">
+                    <a href="{{ path('app_profil_edit') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Modifier mes informations
+                    </a>
+                    <a href="{{ path('app_logout') }}" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                        Déconnexion
+                    </a>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <div class="flex items-center">
+                    <span class="font-medium w-32">Email :</span>
+                    <span>{{ app.user.email }}</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-medium w-32">Nom :</span>
+                    <span>{{ app.user.nom }}</span>
+                </div>
+                <div class="flex items-center">
+                    <span class="font-medium w-32">Prénom :</span>
+                    <span>{{ app.user.prenom }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Espace commandes -->
+        <div class="bg-white rounded-lg shadow-lg p-6">
+            <h2 class="text-2xl font-semibold mb-4">Mes commandes</h2>
+            {% if app.user and app.user.Commande|length > 0 %}
+                <div class="space-y-4">
+                    {% for commande in app.user.Commande %}
+                        <div class="border-b pb-4 mb-4">
+                            <p class="font-medium">Commande #{{ commande.id }}</p>
+                            <p class="text-gray-600">Date : {{ commande.DateCommande|date('d/m/Y') }}</p>
+                            <p class="text-gray-600">Total : {{ commande.MontantTotal|number_format(2, ',', ' ') }} €</p>
+                            
+                            {% for ligne in commande.lignesCommande %}
+                                <div class="flex items-center justify-between py-2">
+                                    <div class="flex items-center space-x-4">
+                                        <div class="w-12 h-12 rounded-lg bg-white/[0.03] overflow-hidden">
+                                            <img src="{{ asset('images/produits/' ~ ligne.produit.Libellé ~ '.webp') }}" 
+                                                 alt="{{ ligne.produit.Libellé }}" 
+                                                 class="w-full h-full object-cover">
+                                        </div>
+                                        <div>
+                                            <p class="text-gray-800">{{ ligne.produit.Libellé }}</p>
+                                            <p class="text-sm text-gray-600">Quantité: {{ ligne.quantite }}</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-gray-800">{{ (ligne.prix * ligne.quantite)|number_format(2, ',', ' ') }} €</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-600">Vous n'avez pas encore passé de commande.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

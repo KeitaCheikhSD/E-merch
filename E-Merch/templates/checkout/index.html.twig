@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Adresse de livraison - E-Merch{% endblock %}
+
+{% block body %}
+<div class="min-h-screen bg-[#0A0F1C]">
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-3xl font-bold text-white mb-4">Adresse de livraison</h1>
+            <p class="text-gray-400 mb-8">Bonjour {{ app.user.nom }}, veuillez entrer votre adresse de livraison pour finaliser votre commande.</p>
+
+            {# Résumé de la commande #}
+            <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] p-4 mb-8">
+                <h2 class="text-xl font-semibold text-white mb-4">Résumé de votre commande</h2>
+                <div class="space-y-2">
+                    <div class="flex justify-between text-gray-300">
+                        <span>Nombre d'articles</span>
+                        <span>{{ totalQuantity }}</span>
+                    </div>
+                    <div class="flex justify-between text-gray-300">
+                        <span>Total</span>
+                        <span class="text-blue-400 font-semibold">{{ total }} €</span>
+                    </div>
+                </div>
+            </div>
+
+            {# Messages flash #}
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if label == 'success' %}bg-green-500/20 text-green-200{% else %}bg-red-500/20 text-red-200{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+
+            {{ form_start(form, {'attr': {'class': 'space-y-6'}}) }}
+                <div class="space-y-4">
+                    <div>
+                        {{ form_label(form.rue, 'Rue', {'label_attr': {'class': 'block text-sm font-medium text-gray-300 mb-1'}}) }}
+                        {{ form_widget(form.rue) }}
+                        {{ form_errors(form.rue, {'attr': {'class': 'text-red-400 text-sm mt-1'}}) }}
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            {{ form_label(form.code_postal, 'Code Postal', {'label_attr': {'class': 'block text-sm font-medium text-gray-300 mb-1'}}) }}
+                            {{ form_widget(form.code_postal) }}
+                            {{ form_errors(form.code_postal, {'attr': {'class': 'text-red-400 text-sm mt-1'}}) }}
+                        </div>
+                        <div>
+                            {{ form_label(form.ville, 'Ville', {'label_attr': {'class': 'block text-sm font-medium text-gray-300 mb-1'}}) }}
+                            {{ form_widget(form.ville) }}
+                            {{ form_errors(form.ville, {'attr': {'class': 'text-red-400 text-sm mt-1'}}) }}
+                        </div>
+                    </div>
+
+                    <div>
+                        {{ form_label(form.pays, 'Pays', {'label_attr': {'class': 'block text-sm font-medium text-gray-300 mb-1'}}) }}
+                        {{ form_widget(form.pays) }}
+                        {{ form_errors(form.pays, {'attr': {'class': 'text-red-400 text-sm mt-1'}}) }}
+                    </div>
+                </div>
+
+                <div class="mt-8">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors">
+                        <a href="{{ path('app_payment') }}">Procéder au paiement</a>
+                    </button>
+                </div>
+            {{ form_end(form) }}
+
+            <div class="mt-4 text-center">
+                <a href="{{ path('app_panier') }}" class="text-gray-400 hover:text-white transition-colors">
+                    Retour au panier
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,273 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+  <div class="min-h-screen relative flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-[#0A0F1C]">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"></div>
+      <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.1) 0%, transparent 50%);"></div>
+      <div class="absolute w-full h-full">
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2" style="background: linear-gradient(217deg, rgba(30,64,175,0.1), rgba(30,64,175,0) 70%);filter: blur(100px);width: 800px;height: 800px;left: 30%;top: 30%;"></div>
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2" style="background: linear-gradient(127deg, rgba(99,102,241,0.1), rgba(99,102,241,0) 70%);filter: blur(100px);width: 800px;height: 800px;left: 70%;top: 70%;"></div>
+      </div>
+      <div class="absolute inset-0 backdrop-blur-[100px]"></div>
+    </div>
+
+    <div class="container relative z-10 mx-auto px-4 py-16">
+      <div class="max-w-md mx-auto">
+        <div class="text-center mb-8">
+          <div class="inline-block p-1 mb-4 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600">
+            <div class="bg-[#0A0F1C] rounded-lg p-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white lucide lucide-user-pen"><path d="M11.5 15H7a4 4 0 0 0-4 4v2"/><path d="M21.378 16.626a1 1 0 0 0-3.004-3.004l-4.01 4.012a2 2 0 0 0-.506.854l-.837 2.87a.5.5 0 0 0 .62.62l2.87-.837a2 2 0 0 0 .854-.506z"/><circle cx="10" cy="7" r="4"/></svg>
+            </div>
+          </div>
+          <h2 class="text-3xl font-bold text-white tracking-tight mb-2">Inscription</h2>
+          <div class="flex items-center justify-center space-x-2 text-sm">
+            <span class="text-gray-400">Vous êtes Déjà un bon G@m3RRR 🤪😎 ?</span>
+            <a href="/login" class="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-150 ease-in-out">
+              Se connecter
+            </a>
+          </div>
+        </div>
+
+        {% if errors|length > 0 %}
+            <div class="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg mb-6" role="alert">
+                {% for error in errors %}
+                    <p class="text-sm">{{ error.message }}</p>
+        {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] shadow-[0_0_1000px_0_rgba(30,64,175,0.1)] p-8">
+          {% if form_errors(registrationForm) %}
+            <div class="bg-red-500/20 border border-red-500/50 text-red-200 px-4 py-3 rounded-lg mb-6" role="alert">
+              {{ form_errors(registrationForm) }}
+            </div>
+          {% endif %}
+          
+          {{ form_start(registrationForm, {'attr': {'class': 'space-y-6', 'id': 'registration-form', 'onsubmit': 'return validateForm(event)'}}) }}
+            {{ form_row(registrationForm._token) }}
+
+            <div>
+                {{ form_label(registrationForm.Email, 'Email', {'label_attr': {'class': 'block text-sm font-medium text-gray-300'}}) }}
+                <div class="mt-1 relative">
+                    {{ form_widget(registrationForm.Email, {
+                        'attr': {
+                            'class': 'block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out' ~ (form_errors(registrationForm.Email) ? ' border-red-500' : ''),
+                            'placeholder': 'grosgam3rrrrr@gmail.com',
+                            'oninput': 'validateEmail(this)'
+                        }
+                    }) }}
+                </div>
+                <div id="email-error" class="mt-2 text-red-400 text-sm hidden">
+                    Veuillez entrer une adresse email valide
+                </div>
+                {% if form_errors(registrationForm.Email) %}
+                    <div class="mt-2 text-red-400 text-sm">
+                        {{ form_errors(registrationForm.Email) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.Telephone, 'Téléphone', {'label_attr': {'class': 'block text-sm font-medium text-gray-300'}}) }}
+                <div class="mt-1 relative">
+                    {{ form_widget(registrationForm.Telephone, {
+                        'attr': {
+                            'class': 'block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out' ~ (form_errors(registrationForm.Telephone) ? ' border-red-500' : ''),
+                            'placeholder': '06 12 34 56 78',
+                            'pattern': '[0-9]{10}',
+                            'title': 'Le numéro doit contenir exactement 10 chiffres',
+                            'oninput': 'validatePhone(this)'
+                        }
+                    }) }}
+                </div>
+                <div id="phone-error" class="mt-2 text-red-400 text-sm hidden">
+                    Le numéro de téléphone doit contenir exactement 10 chiffres
+                </div>
+                {% if form_errors(registrationForm.Telephone) %}
+                    <div class="mt-2 text-red-400 text-sm">
+                        {{ form_errors(registrationForm.Telephone) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.Nom, 'Nom', {'label_attr': {'class': 'block text-sm font-medium text-gray-300'}}) }}
+                <div class="mt-1 relative">
+                    {{ form_widget(registrationForm.Nom, {
+                        'attr': {
+                            'class': 'block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out' ~ (form_errors(registrationForm.Nom) ? ' border-red-500' : ''),
+                            'placeholder': 'Votre nom'
+                        }
+                    }) }}
+                </div>
+                {% if form_errors(registrationForm.Nom) %}
+                    <div class="mt-2 text-red-400 text-sm">
+                        {{ form_errors(registrationForm.Nom) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.Prenom, 'Prénom', {'label_attr': {'class': 'block text-sm font-medium text-gray-300'}}) }}
+                <div class="mt-1 relative">
+                    {{ form_widget(registrationForm.Prenom, {
+                        'attr': {
+                            'class': 'block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out' ~ (form_errors(registrationForm.Prenom) ? ' border-red-500' : ''),
+                            'placeholder': 'Votre prénom'
+                        }
+                    }) }}
+                </div>
+                {% if form_errors(registrationForm.Prenom) %}
+                    <div class="mt-2 text-red-400 text-sm">
+                        {{ form_errors(registrationForm.Prenom) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div>
+                {{ form_label(registrationForm.MotdePasse, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-300'}}) }}
+                <div class="mt-1 relative">
+                    {{ form_widget(registrationForm.MotdePasse, {
+                        'attr': {
+                            'class': 'block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out' ~ (form_errors(registrationForm.MotdePasse) ? ' border-red-500' : ''),
+                            'placeholder': '••••••••',
+                            'minlength': '8',
+                            'oninput': 'validatePassword(this)'
+                        }
+                    }) }}
+                </div>
+                <div id="password-error" class="mt-2 text-red-400 text-sm hidden">
+                    Le mot de passe doit contenir au moins 8 caractères
+                </div>
+                {% if form_errors(registrationForm.MotdePasse) %}
+                    <div class="mt-2 text-red-400 text-sm">
+                        {{ form_errors(registrationForm.MotdePasse) }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5"
+            >
+                S'inscrire
+            </button>
+          {{ form_end(registrationForm) }}
+
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-white/[0.1]"></div>
+              </div>
+             
+            </div>
+
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Fonction pour mettre à jour l'affichage des erreurs
+    function updateErrorDisplay(input, errorDiv, isValid, customErrorMessage = null) {
+        const errorElement = document.getElementById(errorDiv);
+        if (customErrorMessage) {
+            errorElement.textContent = customErrorMessage;
+        }
+        errorElement.classList.toggle('hidden', isValid);
+        input.classList.toggle('border-red-500', !isValid);
+        return isValid;
+    }
+
+    // Validation de l'email
+    function validateEmail(input) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValid = emailRegex.test(input.value);
+        let errorMessage = 'Veuillez entrer une adresse email valide';
+        
+        if (input.value.length === 0) {
+            errorMessage = 'L\'email est requis';
+        } else if (!isValid) {
+            errorMessage = 'Format d\'email invalide';
+        }
+        
+        return updateErrorDisplay(input, 'email-error', isValid, errorMessage);
+    }
+
+    // Validation du téléphone
+    function validatePhone(input) {
+        const phoneRegex = /^0[1-9][0-9]{8}$/;
+        const value = input.value.replace(/\s/g, '');
+        const isValid = phoneRegex.test(value);
+        let errorMessage = 'Le numéro de téléphone doit contenir exactement 10 chiffres';
+        
+        if (value.length === 0) {
+            errorMessage = 'Le numéro de téléphone est requis';
+        } else if (value.length !== 10) {
+            errorMessage = 'Le numéro doit contenir exactement 10 chiffres';
+        } else if (!value.startsWith('0')) {
+            errorMessage = 'Le numéro doit commencer par 0';
+        } else if (!isValid) {
+            errorMessage = 'Format de numéro invalide';
+        }
+        
+        return updateErrorDisplay(input, 'phone-error', isValid, errorMessage);
+    }
+
+    // Validation du mot de passe
+    function validatePassword(input) {
+        const value = input.value;
+        const hasMinLength = value.length >= 8;
+        const hasLetter = /[A-Za-z]/.test(value);
+        const hasNumber = /[0-9]/.test(value);
+        const isValid = hasMinLength && hasLetter && hasNumber;
+        
+        let errorMessage = '';
+        if (value.length === 0) {
+            errorMessage = 'Le mot de passe est requis';
+        } else if (!hasMinLength) {
+            errorMessage = 'Le mot de passe doit contenir au moins 8 caractères';
+        } else if (!hasLetter || !hasNumber) {
+            errorMessage = 'Le mot de passe doit contenir au moins une lettre et un chiffre';
+        }
+        
+        return updateErrorDisplay(input, 'password-error', isValid, errorMessage);
+    }
+
+    // Validation du formulaire complet
+    function validateForm(event) {
+        const email = document.querySelector('input[name="register[Email]"]');
+        const phone = document.querySelector('input[name="register[Telephone]"]');
+        const password = document.querySelector('input[name="register[MotdePasse]"]');
+        
+        const isEmailValid = validateEmail(email);
+        const isPhoneValid = validatePhone(phone);
+        const isPasswordValid = validatePassword(password);
+
+        if (!isEmailValid || !isPhoneValid || !isPasswordValid) {
+            event.preventDefault();
+            return false;
+        }
+        return true;
+    }
+
+    // Ajouter les écouteurs d'événements pour la validation en temps réel
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.getElementById('registration-form');
+        const email = document.querySelector('input[name="register[Email]"]');
+        const phone = document.querySelector('input[name="register[Telephone]"]');
+        const password = document.querySelector('input[name="register[MotdePasse]"]');
+
+        email.addEventListener('input', () => validateEmail(email));
+        phone.addEventListener('input', () => validatePhone(phone));
+        password.addEventListener('input', () => validatePassword(password));
+
+        form.addEventListener('submit', validateForm);
+    });
+  </script>
+{% endblock %}

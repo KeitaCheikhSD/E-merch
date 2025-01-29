@@ -1,0 +1,141 @@
+{% extends 'base.html.twig' %}
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+  <div class="min-h-screen relative flex items-center justify-center overflow-hidden">
+    <div class="absolute inset-0 bg-[#0A0F1C]">
+      <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-purple-500/10"></div>
+      <div class="absolute inset-0" style="background: radial-gradient(circle at 50% 50%, rgba(30, 64, 175, 0.1) 0%, transparent 50%);"></div>
+      <div class="absolute w-full h-full">
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2" style="background: linear-gradient(217deg, rgba(30,64,175,0.1), rgba(30,64,175,0) 70%);filter: blur(100px);width: 800px;height: 800px;left: 30%;top: 30%;"></div>
+        <div class="absolute transform -translate-x-1/2 -translate-y-1/2" style="background: linear-gradient(127deg, rgba(99,102,241,0.1), rgba(99,102,241,0) 70%);filter: blur(100px);width: 800px;height: 800px;left: 70%;top: 70%;"></div>
+      </div>
+      <div class="absolute inset-0 backdrop-blur-[100px]"></div>
+    </div>
+
+    <div class="container relative z-10 mx-auto px-4 py-16">
+      <div class="max-w-md mx-auto">
+        <div class="text-center mb-8">
+          <div class="inline-block p-1 mb-4 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600">
+            <div class="bg-[#0A0F1C] rounded-lg p-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white lucide lucide-user-check"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>
+            </div>
+          </div>
+          <h2 class="text-3xl font-bold text-white tracking-tight mb-2">Connexion</h2>
+          <div class="flex items-center justify-center space-x-2 text-sm">
+            <span class="text-gray-400">Vous n'êtes pas encore un G@M3RRR 🤪😎 ?</span>
+            <a href="/register" class="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-150 ease-in-out">
+              S'inscrire
+            </a>
+          </div>
+        </div>
+
+        {% if error %}
+            <div class="mb-6">
+                <div class="bg-white/[0.02] backdrop-blur-sm rounded-xl border border-red-500/20 p-4 shadow-lg">
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="h-6 w-6 text-red-400" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+                            </svg>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-sm font-medium text-red-400">
+                                {% if error.messageKey == 'Invalid credentials.' %}
+                                    Identifiants incorrects
+                                {% elseif error.messageKey == 'Invalid CSRF token.' %}
+                                    Session expirée
+                                {% else %}
+                                    Erreur d'authentification
+                                {% endif %}
+                            </h3>
+                            <div class="mt-1">
+                                <p class="text-sm text-gray-400">
+                                    {% if error.messageKey == 'Invalid credentials.' %}
+                                        L'email ou le mot de passe que vous avez saisi est incorrect. Veuillez réessayer.
+                                    {% elseif error.messageKey == 'Invalid CSRF token.' %}
+                                        Votre session a expiré pour des raisons de sécurité. Veuillez réessayer de vous connecter.
+                                    {% else %}
+                                        {{ error.messageKey|trans(error.messageData, 'security') }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="bg-white/[0.02] backdrop-blur-sm rounded-2xl border border-white/[0.05] shadow-[0_0_1000px_0_rgba(30,64,175,0.1)] p-8">
+          
+
+          <form method="post" action="{{ path('app_login') }}" class="space-y-6" data-turbo="false">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300">Email</label>
+                <div class="mt-1 relative">
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="_email" 
+                        value="{{ last_username }}" 
+                        class="block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+                        placeholder="grosgam3rrrrr@gmail.com"
+                        required 
+                        autofocus
+                    >
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-300">Mot de passe</label>
+                <div class="mt-1 relative">
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="_password" 
+                        class="block w-full px-4 py-3 bg-white/[0.03] border border-white/[0.1] rounded-xl text-white placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 ease-in-out"
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <input 
+                        type="checkbox" 
+                        id="remember_me" 
+                        name="_remember_me"
+                        class="h-4 w-4 bg-white/[0.03] border-white/[0.1] rounded text-blue-500 focus:ring-blue-500 focus:ring-offset-0"
+                    >
+                    <label for="remember_me" class="ml-2 block text-sm text-gray-400">
+                        Se souvenir de moi
+                    </label>
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 ease-in-out transform hover:-translate-y-0.5"
+            >
+                Se connecter
+            </button>
+          </form>
+
+          <div class="mt-6">
+            <div class="relative">
+              <div class="absolute inset-0 flex items-center">
+                <div class="w-full border-t border-white/[0.1]"></div>
+              </div>
+             
+            </div>
+
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
